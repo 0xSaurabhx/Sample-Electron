@@ -30,10 +30,12 @@ jobs:
 
       - name: Package
         if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' || (matrix.os == 'windows-latest' && runner.os == 'Windows')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [ "${{ runner.os }}" = "Windows" ]; then
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
             npm run package:win
-          elif [ "${{ runner.os }}" = "macOS" ]; then
+          elif [[ "${{ runner.os }}" == "macOS" ]]; then
             npm run package:mac
           else
             npm run package:linux
