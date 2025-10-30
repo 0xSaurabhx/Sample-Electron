@@ -1,0 +1,95 @@
+{
+  "name": "electron-todo",
+  "version": "1.0.0",
+  "description": "A cross-platform todo application built with Electron and React",
+  "homepage": "./",
+  "main": "dist/main/index.js",
+  "author": {
+    "name": "Your Name",
+    "email": "your.email@example.com"
+  },
+  "license": "MIT",
+  "scripts": {
+    "init": "node scripts/init.js",
+    "start": "cross-env NODE_ENV=production electron .",
+    "dev": "cross-env NODE_ENV=development npm-run-all -p start:renderer start:electron",
+    "start:electron": "wait-on tcp:3000 && cross-env NODE_ENV=development electron .",
+    "start:renderer": "cross-env BROWSER=none NODE_ENV=development webpack serve --config webpack.renderer.config.js",
+    "build": "npm run init && run-s build:main build:renderer",
+    "build:main": "tsc -p tsconfig.json",
+    "build:renderer": "tsc -p tsconfig.renderer.json && webpack --config webpack.renderer.config.js --mode production",
+    "package": "npm run build && electron-builder build --publish never",
+    "package:win": "npm run build && electron-builder build --windows",
+    "package:mac": "npm run build && electron-builder build --mac",
+    "package:linux": "npm run build && electron-builder build --linux",
+    "lint": "eslint --ext .ts,.tsx ."
+  },
+  "build": {
+    "appId": "com.electron.todo",
+    "productName": "Electron Todo",
+    "copyright": "Copyright © 2025",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "node_modules/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": ["dmg", "zip"]
+    },
+    "win": {
+      "target": ["nsis", "portable"]
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "category": "Utility",
+      "maintainer": "Your Name <your.email@example.com>"
+    }
+  },
+  "keywords": [
+    "electron",
+    "react",
+    "typescript",
+    "todo",
+    "productivity"
+  ],
+  "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.13.0",
+    "electron-store": "^8.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.21.8",
+    "@babel/preset-env": "^7.21.5",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.21.4",
+    "@types/node": "^18.15.11",
+    "@types/react": "^18.0.33",
+    "@types/react-dom": "^18.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.57.0",
+    "@typescript-eslint/parser": "^5.57.0",
+    "babel-loader": "^9.1.2",
+    "concurrently": "^8.0.1",
+    "cross-env": "^7.0.3",
+    "css-loader": "^6.7.3",
+    "electron": "^24.3.0",
+    "electron-builder": "^23.6.0",
+    "eslint": "^8.37.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "html-webpack-plugin": "^5.5.0",
+    "npm-run-all": "^4.1.5",
+    "style-loader": "^3.3.2",
+    "typescript": "^5.0.4",
+    "wait-on": "^7.0.1",
+    "webpack": "^5.76.3",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.13.1"
+  }
+}
