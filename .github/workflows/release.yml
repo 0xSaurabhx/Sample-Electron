@@ -69,16 +69,26 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ steps.version.outputs.version }}
-          name: v${{ steps.version.outputs.version }}
+          release_name: v${{ steps.version.outputs.version }}
           body: |
             ### Changes
             - Initial release
-          files: |
-            artifacts/electron-todo-*/*
           draft: false
           prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Assets
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/electron-todo-*/*
+          asset_name: ${{ github.workspace }}/${{ github.event.repository.name }}-${{ steps.version.outputs.version }}-${{ runner.os }}.zip
+          asset_content_type: application/zip
