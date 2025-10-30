@@ -31,13 +31,14 @@ jobs:
       - name: Package
         if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' || (matrix.os == 'windows-latest' && runner.os == 'Windows')
         run: |
-          if [[ "${{ runner.os }}" == "Windows" ]]; then
+          if [ "${{ runner.os }}" = "Windows" ]; then
             npm run package:win
-          elif [[ "${{ runner.os }}" == "macOS" ]]; then
+          elif [ "${{ runner.os }}" = "macOS" ]; then
             npm run package:mac
           else
             npm run package:linux
           fi
+        shell: bash
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -77,5 +78,7 @@ jobs:
             - Initial release
           files: |
             artifacts/electron-todo-*/*
+          draft: false
+          prerelease: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
