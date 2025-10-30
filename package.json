@@ -28,6 +28,10 @@
     "appId": "com.electron.todo",
     "productName": "Electron Todo",
     "copyright": "Copyright © 2025",
+    "publish": {
+      "provider": "github",
+      "releaseType": "release"
+    },
     "directories": {
       "output": "release"
     },
